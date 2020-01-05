@@ -20,10 +20,24 @@ stages:
     pool:
       vmImage: 'ubuntu-latest'
     steps:
-    - task: Docker@2
+    - task: Docker@1
       displayName: Build an image
       inputs:
-        command: build
+        containerregistrytype: 'container Registry'
+        dockerRegistryEndpoint: dockerRegistryServiceConnection1
+        imageName: 'sahilabhishek/docker-python-webapplication:$(Build.BuildId)'
+        command: Build an image
         dockerfile: '$(Build.SourcesDirectory)/Dockerfile'
+    - task: Docker@1
+      displayName: Login
+      inputs:
+        containerregistrytype: 'container Registry'
+        dockerRegistryEndpoint: dockerRegistryServiceConnection1
+        command: login
+    - task: Docker@1
+      displayName: 'Push an image'
+      inputs:
+        command: push an image
+        imageName: 'sahilabhishek/docker-python-webapplication:$(Build.BuildId)'
         tags: |
           $(tag)
